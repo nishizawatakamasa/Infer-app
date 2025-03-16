@@ -1,10 +1,19 @@
 import joblib
 import numpy as np
 from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
 from sklearn.linear_model import LinearRegression
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['https://infer-app-front.onrender.com'],
+    allow_credentials=False,
+    allow_methods=['GET'],
+    allow_headers=['*'],
+)
 
 MODEL_FILE = 'models/model.joblib'
 model: LinearRegression = joblib.load(MODEL_FILE)
