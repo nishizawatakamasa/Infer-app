@@ -1,6 +1,6 @@
 import joblib
 import numpy as np
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
 from sklearn.linear_model import LinearRegression
@@ -26,7 +26,7 @@ class PredictionQuery(BaseModel):
     @classmethod
     def feature_must_be_positive(cls, value):
         if value <= 0:
-            raise ValueError('feature must be positive')
+            raise HTTPException(status_code=400, detail='feature must be positive')
         return value
 
 class PredictionResponse(BaseModel):
